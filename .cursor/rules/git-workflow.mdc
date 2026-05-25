@@ -1,0 +1,59 @@
+---
+description: Git workflow for reviewable changes. Branch from fresh main, commit in logical units, write conventional-commit messages, open a small PR. Apply when the work involves branching, committing, or opening a pull request.
+alwaysApply: false
+---
+
+# Git Workflow
+
+A git workflow for any change that will be reviewed. Sloppy history is unreviewable and unrevertable; these habits keep it legible.
+
+## 1. Start fresh
+
+Branch from an up-to-date `main`. A branch cut from stale `main` carries conflicts you did not write.
+
+```bash
+git checkout main
+git pull origin main
+git status   # clean tree before branching
+```
+
+## 2. Branch with intent
+
+```bash
+git checkout -b feature/<slug>
+git checkout -b fix/<slug>
+git checkout -b chore/<slug>
+```
+
+The name states the type and the intent. A reader should know what the branch does without reading the diff.
+
+## 3. Commit in logical units
+
+One idea per commit. If the message needs "and," it is two commits.
+
+```bash
+git add -p              # split a dirty tree into logical hunks
+git diff --staged       # read it before committing
+git commit -m "feat(scope): imperative description"
+```
+
+Atomic commits are what make a branch revertable.
+
+## 4. Write conventional-commit messages
+
+`type(scope): description`. Types: `feat`, `fix`, `docs`, `refactor`, `test`, `chore`.
+
+- Imperative mood, no trailing period, under ~72 characters.
+- Add a body after a blank line explaining why, not what.
+
+## 5. Push and open a reviewable PR
+
+```bash
+git push -u origin feature/<slug>
+```
+
+A reviewable PR does one thing, stays small, and has a description stating what changed, why, and how it was verified.
+
+## 6. Keep it reviewable
+
+Answer review feedback with new commits. Keep the branch current with `main` so the diff stays honest. Resolve conflicts on your branch, not the reviewer's.
